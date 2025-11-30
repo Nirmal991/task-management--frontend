@@ -1,0 +1,263 @@
+/* ===========================================
+   PAGE BASE
+=========================================== */
+.dash-content {
+  --background: #f5f6fb;
+  position: relative;
+}
+
+/* Blue gradient top section */
+.dash-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(135deg, #3b5bff, #5c7dff);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  z-index: 0;
+}
+
+/* ===========================================
+   HEADER TOOLBAR 
+=========================================== */
+.dash-header {
+  background: transparent;
+}
+
+.dash-toolbar {
+  --background: transparent;
+  --border-width: 0;
+}
+
+/* Row container: LEFT title + RIGHT search/buttons */
+.dash-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 6px;
+}
+
+/* ===========================================
+   LEFT SECTION (Good Morning)
+=========================================== */
+.dash-header-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.dash-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.dash-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ===========================================
+   RIGHT SECTION — Notification + Search
+=========================================== */
+.dash-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Notification Circle Button */
+.dash-icon-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.dash-icon-button ion-icon {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+/* Search pill */
+.dash-search {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 5px 10px;
+}
+
+.dash-search-icon {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-right: 4px;
+}
+
+.dash-search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 13px;
+  width: 90px;  /* Adjust this if needed */
+}
+
+.dash-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ===========================================
+   STATS SECTION
+=========================================== */
+.dash-stats {
+  padding: 0 16px;
+  padding-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 14px 12px;
+  box-shadow: 0 12px 25px rgba(20, 32, 75, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+/* icons in stat cards */
+.stat-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef0ff;
+  color: #4a5dff;
+  font-size: 18px;
+}
+
+.stat-icon.success {
+  background: #e6f8ec;
+  color: #1ca14b;
+}
+
+.stat-icon.warning {
+  background: #fff4e5;
+  color: #ff9800;
+}
+
+.stat-icon.danger {
+  background: #ffe7e7;
+  color: #ff4d4f;
+}
+
+.stat-value {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #161b3d;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #8a8ea6;
+}
+
+/* ===========================================
+   RECENT PROJECTS
+=========================================== */
+.dash-projects {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  padding: 0 16px 24px 16px;
+}
+
+.dash-projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.dash-projects-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #171b3b;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3c54ff;
+}
+
+/* Project Cards */
+.project-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 14px 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 18px rgba(20, 32, 75, 0.08);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-header h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1d3f;
+}
+
+.project-tasks {
+  font-size: 12px;
+  color: #9a9fb7;
+}
+
+.project-progress-label {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #9a9fb7;
+}
+
+/* Progress Bar */
+.project-progress-bar {
+  margin-top: 6px;
+  height: 8px;
+  --background: #f1f2f7;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.project-progress-bar.primary {
+  --progress-background: #3c54ff;
+}
+
+.project-progress-bar.secondary {
+  --progress-background: #ff8a4a;
+}
+
+.project-percentage {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+  color: #1b1e3f;
+}

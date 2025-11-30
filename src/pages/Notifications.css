@@ -1,0 +1,122 @@
+/* page base */
+.notif-content {
+  --background: #f5f6fb;
+  position: relative;
+}
+
+/* blue header gradient */
+.notif-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 170px;
+  background: linear-gradient(135deg, #3b5bff, #5c7dff);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  z-index: 0;
+}
+
+/* header title */
+.notif-header {
+  background: transparent;
+}
+
+.notif-toolbar {
+  --background: transparent;
+  --border-width: 0;
+}
+
+.notif-title {
+  padding: 18px 20px 10px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* list */
+.notif-list {
+  margin-top: 10px;
+  padding: 0 16px 24px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* card */
+.notif-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 8px 18px rgba(20, 32, 75, 0.06);
+}
+
+.notif-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* icon circle */
+.notif-icon-wrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef1ff;
+  color: #4a5dff;
+  font-size: 18px;
+}
+
+.notif-icon-wrapper.secondary {
+  background: #f0e9ff;
+  color: #6a4dff;
+}
+
+.notif-icon-wrapper.warning {
+  background: #fff4e5;
+  color: #ff8a4a;
+}
+
+/* text block */
+.notif-text {
+  flex: 1;
+}
+
+.notif-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notif-row h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1d3f;
+}
+
+/* "New" badge */
+.notif-badge {
+  background: #ff8a4a;
+  color: #ffffff;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* message + time */
+.notif-body {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #72769a;
+}
+
+.notif-time {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #a1a4c0;
+}

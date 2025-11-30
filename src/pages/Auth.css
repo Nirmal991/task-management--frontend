@@ -1,0 +1,74 @@
+.auth-container {
+  --background:#f5f6fb;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;      /* Centers vertically */
+  height:100vh;                /* Full screen height */
+  padding-top:60px;            /* Keep title above */
+}
+
+.auth-title {
+  font-size:26px;
+  font-weight:700;
+  margin-bottom:30px;
+  color:#1a1d3f;
+}
+
+.auth-box {
+  width:90%;
+  max-width:400px;
+  background:#ffffff;
+  padding:25px;
+  align-items:center;
+  justify-content: space-between;
+  margin-top:150px;
+   margin-left:20px;
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+/* Inputs */
+.auth-input {
+  width:90%;
+  background:#fff;
+  border-radius:12px;
+  margin-bottom:14px;
+  padding:12px;
+  --padding-start:12px;
+  --padding-end:12px;
+  box-shadow: 0 5px 12px rgba(20,32,75,0.07);
+  font-size:15px;
+   --color: #000000;         
+  --placeholder-color: #888;
+}
+
+/* Button */
+.auth-btn {
+  width:90%;
+  margin-top:8px;
+  --background:#3B5BFF;
+  border-radius:12px;
+  font-weight:600;
+  color:#fff;
+}
+
+/* Footer links */
+.auth-footer {
+  margin-top:18px;
+  font-size:14px;
+  color: #000000;
+}
+
+.auth-footer IonText {
+  color: #000000 !important; 
+}
+
+.auth-link {
+  color:#3B5BFF;
+  font-weight:600;
+  cursor:pointer;
+}

@@ -1,0 +1,94 @@
+.task-content { --background:#f5f6fb; position:relative; }
+
+/* Blue gradient top */
+.task-gradient{
+  height:250px;
+  background:linear-gradient(135deg,#3b5bff,#5c7dff);
+  border-bottom-left-radius:24px;
+  border-bottom-right-radius:24px;
+  position:absolute;top:0;left:0;right:0;
+  z-index:0;
+}
+
+/* NAVBAR */
+.task-header,.task-toolbar{ background:transparent;border:none; }
+
+.task-header-row{
+  display:flex;align-items:center;gap:10px;
+  padding:16px 18px;
+}
+
+.task-back-icon{
+  font-size:26px;color:#fff;cursor:pointer;
+}
+
+.task-title-inline{
+  font-size:20px;font-weight:700;color:#fff;
+}
+
+/* Overview Section */
+.task-hero{
+  position:relative;z-index:1;padding:10px 20px;margin-top:8px;
+}
+
+.task-sub{
+  color:#fff;font-size:13px;opacity:.9;margin-top:4px;
+}
+
+.task-info-row{display:flex;gap:18px;margin-top:14px;}
+.task-info{color:#fff;font-size:13px;display:flex;align-items:center;gap:6px;}
+
+.task-progress-top{
+  display:flex;justify-content:space-between;color:#fff;
+  font-size:13px;margin-top:18px;
+}
+.task-progress-bar{
+  --background:rgba(255,255,255,.4);
+  --progress-background:#fff;
+  height:8px;border-radius:999px;margin-top:6px;
+}
+.task-progress-percent{font-weight:700;}
+
+/* TASK LIST */
+.task-section{padding:0 16px 20px;margin-top:25px;position:relative;z-index:1;}
+.task-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.task-section-header h2{font-size:18px;font-weight:600;color:#171b3b;}
+
+.task-add-btn{
+  display:flex;align-items:center;gap:6px;
+  background:#ff8a4a;color:#fff;padding:6px 14px;
+  border:none;border-radius:999px;font-size:13px;font-weight:600;
+}
+
+/* Task card */
+.task-card{
+  background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;
+  box-shadow:0 8px 18px rgba(20,32,75,.06);
+}
+.task-card-head{display:flex;justify-content:space-between;align-items:center;}
+.task-menu-icon{color:#b4b7c9;font-size:18px;}
+
+.task-left{display:flex;align-items:center;gap:10px;}
+
+.task-icon{
+  width:22px;height:22px;border-radius:999px;display:flex;
+  justify-content:center;align-items:center;border:2px solid #cfd3ff;
+  color:#cfd3ff;font-size:14px;
+}
+.task-icon.done{background:#4a5dff;border-color:#4a5dff;color:#fff;}
+
+.task-completed{text-decoration:line-through;color:#9aa0c1;}
+
+.task-tags{display:flex;gap:6px;margin-top:10px;}
+
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;}
+.green{background:#1fb565;color:#fff;}
+.red{color:#ff4d4f;}
+.orange{color:#ff9800;}
+.blue{background:#eef1ff;color:#4a5dff;}
+.yellow{color:#e2b000;}
+
+.task-assigned{display:flex;align-items:center;margin-top:10px;}
+.task-avatar{
+  width:20px;height:20px;border-radius:999px;background:#4a5dff;margin-right:6px;
+}
