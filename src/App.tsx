@@ -66,6 +66,9 @@ const App: React.FC = () => (
           <Route path="/profile">
             <Profile />
           </Route>
+          <Route path="/notifications">
+            <Notifications />
+          </Route>
           <Route exact path="/">
             <Redirect to="/dashboard" />
           </Route>

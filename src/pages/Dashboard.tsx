@@ -21,8 +21,12 @@ import {
 } from "ionicons/icons";
 
 import "./Dashboard.css";
+import { useHistory } from "react-router";
 
 const Dashboard: React.FC = () => {
+
+  const history = useHistory();
+
   return (
     <IonPage>
       <IonHeader translucent={true} className="dash-header">
@@ -32,14 +36,14 @@ const Dashboard: React.FC = () => {
             <div className="dash-header-left">
               <h1 className="dash-title">Good Morning 👋</h1>
               <p className="dash-subtitle">
-                Here&apos;s what&apos;s happening with your projects
+                Here's what's happening with your projects
               </p>
             </div>
 
             {/* RIGHT: notification + search */}
             <div className="dash-header-right">
               <button className="dash-icon-button">
-                <IonIcon icon={notificationsOutline} />
+                <IonIcon onClick={() => history.push("/notifications")} icon={notificationsOutline} />
               </button>
 
               <div className="dash-search">
@@ -68,7 +72,7 @@ const Dashboard: React.FC = () => {
                   <div className="stat-icon">
                     <IonIcon icon={gridOutline} />
                   </div>
-                  <div className="stat-value">8</div>
+                  <div className="stat-value">2</div>
                   <IonText className="stat-label">Total Projects</IonText>
                 </div>
               </IonCol>

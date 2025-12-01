@@ -5,11 +5,4 @@ const api = axios.create({
     withCredentials: true,
 })
 
-export const loginRequest = (username: string, password: string) => {
-  return api.post("/auth/login", {
-    username: username, 
-    password: password,
-  });
-};
-
 export default api;

@@ -7,7 +7,7 @@ import {
   IonText,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-import { loginRequest } from "../api/api";
+import { loginRequest } from "../store";
 import "./Auth.css";
 
 const Login: React.FC = () => {
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       localStorage.setItem("authToken", token);
       localStorage.setItem("authUser", JSON.stringify(data));
       history.push("/dashboard");
-    } catch (error: any) {
+    } catch (error) {
       console.error("Login error:", error);
     }
   };
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
         <div className="auth-box">
           <IonInput
             className="auth-input"
-            placeholder="Username or Email"
+            placeholder="Enter Username"
             value={username}
             onIonChange={(e) => setusername(e.detail.value || "")}
           />
@@ -44,7 +44,7 @@ const Login: React.FC = () => {
           <IonInput
             className="auth-input"
             type="password"
-            placeholder="Password"
+            placeholder="Enter Password"
             value={password}
             onIonChange={(e) => setPassword(e.detail.value || "")}
           />
@@ -58,12 +58,12 @@ const Login: React.FC = () => {
           </IonButton>
 
           
-            <IonText color="danger">
+            {/* <IonText color="danger">
               <p style={{ marginTop: 8 }}></p>
-            </IonText>
+            </IonText> */}
 
           <p className="auth-footer">
-            Don&apos;t have an account?
+            Don't have an account?
             <span
               className="auth-link"
               onClick={() => history.push("/signup")}
