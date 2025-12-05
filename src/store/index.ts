@@ -1,16 +1,37 @@
 import api from "../api/api";
 
+
 export const loginRequest = (username: string, password: string) => {
-  return api.post("/auth/login", {
-    username: username, 
-    password: password,
+  return api("/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ username, password}),
   });
 };
 
 export const SignUpRequest = (username: string, email: string, password: string) => {
-    return api.post('/auth/signup', {
-        username: username,
-        email: email,
-        password: password,
-    });
-}
+  return api("/auth/signup", {
+    method: "POST",
+    body: JSON.stringify({ username, email, password}),
+  });
+};
+
+
+
+
+
+
+// export const loginRequest = (username: string, password: string) => {
+//   return api.post("/auth/login", {
+//     username: username, 
+//     password: password,
+//   });
+// };
+
+// export const SignUpRequest = (username: string, email: string, password: string) => {
+//     return api.post('/auth/signup', {
+//         username: username,
+//         email: email,
+//         password: password,
+//     });
+// }
+
