@@ -40,6 +40,7 @@ import TaskDetails from './pages/TaskDetails';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Example from './components/CreateOrg';
 
 setupIonicReact();
 
@@ -50,6 +51,9 @@ const App: React.FC = () => (
         <IonRouterOutlet>
           <Route exact path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route exact path="/createOrg">
+            <Example />
           </Route>
           <Route exact path="/login">
             <Login />
