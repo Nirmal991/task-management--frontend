@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   IonPage,
   IonContent,
@@ -7,21 +7,41 @@ import {
   IonText,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 import { loginRequest } from "../store";
 import "./Auth.css";
+
+interface LoginForm {
+  username: string;
+  password: string;
+}
 
 const Login: React.FC = () => {
   const history = useHistory();
 
-  const [username, setusername] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginForm>({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
-  const handleLogin = async () => {
+  const onSubmit = async (formData: LoginForm) => {
     try {
-      const response = await loginRequest(username, password);
+      const response = await loginRequest(
+        formData.username,
+        formData.password
+      );
+
       const { token, data } = response.data;
+
       localStorage.setItem("authToken", token);
       localStorage.setItem("authUser", JSON.stringify(data));
+
       history.push("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
@@ -33,34 +53,61 @@ const Login: React.FC = () => {
       <IonContent className="auth-container">
         <h1 className="auth-title">Welcome Back</h1>
 
-        <div className="auth-box">
-          <IonInput
-            className="auth-input"
-            placeholder="Enter Username"
-            value={username}
-            onIonChange={(e) => setusername(e.detail.value || "")}
+        <form className="auth-box" onSubmit={handleSubmit(onSubmit)}>
+          {/* Username */}
+          <Controller
+            name="username"
+            control={control}
+            rules={{ required: "Username is required" }}
+            render={({ field }) => (
+              <IonInput
+                {...field}
+                className="auth-input"
+                placeholder="Enter Username"
+              />
+            )}
           />
+          {errors.username && (
+            <IonText color="danger">
+              <p className="auth-error">{errors.username.message}</p>
+            </IonText>
+          )}
 
-          <IonInput
-            className="auth-input"
-            type="password"
-            placeholder="Enter Password"
-            value={password}
-            onIonChange={(e) => setPassword(e.detail.value || "")}
+          {/* Password */}
+          <Controller
+            name="password"
+            control={control}
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+            }}
+            render={({ field }) => (
+              <IonInput
+                {...field}
+                type="password"
+                className="auth-input"
+                placeholder="Enter Password"
+              />
+            )}
           />
+          {errors.password && (
+            <IonText color="danger">
+              <p className="auth-error">{errors.password.message}</p>
+            </IonText>
+          )}
 
+          {/* Login Button */}
           <IonButton
             expand="block"
             className="auth-btn"
-            onClick={handleLogin}
+            type="submit"
+            disabled={isSubmitting}
           >
-             Login
+            {isSubmitting ? "Logging in..." : "Login"}
           </IonButton>
-
-          
-            {/* <IonText color="danger">
-              <p style={{ marginTop: 8 }}></p>
-            </IonText> */}
 
           <p className="auth-footer">
             Don't have an account?
@@ -72,7 +119,7 @@ const Login: React.FC = () => {
               Sign Up
             </span>
           </p>
-        </div>
+        </form>
       </IonContent>
     </IonPage>
   );

@@ -72,3 +72,32 @@
   font-weight:600;
   cursor:pointer;
 }
+
+.auth-error {
+  margin: 6px 0 10px;
+  font-size: 13px;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-input {
+  padding-right: 44px; /* space for eye icon */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.password-toggle:active {
+  opacity: 0.7;
+}
+
+

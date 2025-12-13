@@ -1,0 +1,195 @@
+:root {
+  --index-grad-from: #4b6fff;
+  --index-grad-to: #7b5cff;
+  --surface-bg: #f6f7fb;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --accent: #4b6fff;
+  --accent-foreground: #fff;
+}
+
+/* Gradient header toolbar */
+.index-gradient {
+  --background: linear-gradient(135deg, var(--index-grad-from), var(--index-grad-to));
+  --ion-toolbar-background: linear-gradient(135deg, var(--index-grad-from), var(--index-grad-to));
+  color: #fff;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+/* Remove shadow that may appear */
+.toolbar-no-shadow {
+  box-shadow: none !important;
+}
+
+/* Header container */
+.index-header-inner {
+  padding: 4px 16px 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Hero area */
+.index-hero {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.index-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.12);
+  display: inline-grid;
+  place-items: center;
+  margin: 0 auto 12px;
+  font-size: 28px;
+  color: #fff;
+}
+
+.index-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+}
+
+.index-accent {
+  color: rgba(255,255,255,0.95);
+}
+
+.index-sub {
+  margin: 8px auto 0;
+  color: rgba(255,255,255,0.9);
+  font-size: 14px;
+  max-width: 520px;
+}
+
+/* Content below gradient */
+.index-content {
+  --background: var(--surface-bg);
+}
+
+/* wrapper that overlaps the header */
+.index-card-wrap {
+  margin-top: -8px;
+  padding: 16px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Feature cards */
+.feature-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  margin-bottom: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.feature-inner {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+}
+
+.feature-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* icons */
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(75,111,255,0.08);
+  color: var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  font-size: 20px;
+}
+
+.feature-icon.bg-primary {
+  background: rgba(75,111,255,0.08);
+  color: var(--accent);
+}
+
+.feature-icon.bg-accent {
+  background: rgba(124,58,237,0.06);
+  color: #7b5cff;
+}
+
+.feature-icon.bg-success {
+  background: rgba(16,185,129,0.06);
+  color: #10b981;
+}
+
+/* Texts inside feature card */
+.feature-title {
+  display: block;
+  font-weight: 700;
+  font-size: 15px;
+  color: #111827;
+}
+
+.feature-sub {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* CTA area */
+.index-cta-wrap {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 4px 24px;
+}
+
+.cta-primary {
+  --background: var(--accent);
+  --background-activated: var(--index-grad-from);
+  --color: var(--accent-foreground);
+  font-weight: 600;
+  height: 48px;
+  border-radius: 12px;
+  --box-shadow: none;
+}
+
+.cta-outline {
+  height: 48px;
+  border-radius: 12px;
+  font-weight: 600;
+  --padding-start: 18px;
+  --padding-end: 18px;
+}
+
+/* bottom safe space for tab bar */
+.index-bottom-space {
+  height: 88px;
+}
+
+/* responsive tweaks */
+@media (max-width: 480px) {
+  .index-header-inner { padding: 8px 12px; }
+  .index-icon { width: 64px; height: 64px; border-radius: 16px; font-size: 24px; }
+  .index-title { font-size: 18px; }
+  .index-sub { font-size: 13px; }
+  .index-card-wrap { padding: 12px; }
+  .feature-inner { padding: 12px; }
+  .feature-icon { width: 40px; height: 40px; border-radius: 10px; }
+  .cta-primary, .cta-outline { height: 44px; }
+}

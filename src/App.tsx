@@ -41,6 +41,7 @@ import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Example from './components/CreateOrg';
+import Index from './pages/Index';
 
 setupIonicReact();
 
@@ -52,8 +53,8 @@ const App: React.FC = () => (
           <Route exact path="/dashboard">
             <Dashboard />
           </Route>
-          <Route exact path="/createOrg">
-            <Example />
+          <Route exact path="/home">
+            < Index/>
           </Route>
           <Route exact path="/login">
             <Login />
@@ -74,7 +75,7 @@ const App: React.FC = () => (
             <Notifications />
           </Route>
           <Route exact path="/">
-            <Redirect to="/dashboard" />
+            <Redirect to="/home" />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">

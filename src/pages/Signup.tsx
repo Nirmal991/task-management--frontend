@@ -8,57 +8,63 @@ import {
   IonAlert,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 import "./Auth.css";
 import { CreateOrg, SignUpRequest } from "../store";
+
+interface SignupForm {
+  username: string;
+  email: string;
+  password: string;
+}
 
 const Signup: React.FC = () => {
   const history = useHistory();
 
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handelSignup = async () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupForm>({
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (formData: SignupForm) => {
     setError(null);
 
-    if (!username || !email || !password) {
-      setError("Please fill all fields");
-      return;
-    }
-
     try {
-      const response = await SignUpRequest(username, email, password);
+      const response = await SignUpRequest(
+        formData.username,
+        formData.email,
+        formData.password
+      );
 
       const { token, data } = response.data;
       localStorage.setItem("authToken", token);
       localStorage.setItem("authUser", JSON.stringify(data));
 
       setShowAlert(true);
-    } catch (error: any) {
-      console.log("SignUp Error: ", error);
-      console.log("Backend says:", error?.response?.data);
+    } catch (err: any) {
+      console.log("SignUp Error: ", err);
       setError(
-        error?.response?.data?.message || "Signup failed. Please try again."
+        err?.response?.data?.message || "Signup failed. Please try again."
       );
     }
   };
 
-  
   const handleOrgSubmit = async (orgName: string, domain: string) => {
-    if (!orgName.trim() || !domain.trim()) {
-      return;
-    }
+    if (!orgName.trim() || !domain.trim()) return;
 
     try {
       const response = await CreateOrg(orgName, domain);
-      console.log("Org created:", response.data);
-
-      const orgData = response.data;
-      localStorage.setItem("orgInfo", JSON.stringify(orgData));
-
+      localStorage.setItem("orgInfo", JSON.stringify(response.data));
       history.push("/dashboard");
     } catch (error) {
       console.log("Create Org Error: ", error);
@@ -70,32 +76,86 @@ const Signup: React.FC = () => {
       <IonContent className="auth-container">
         <h1 className="auth-title">Create Account</h1>
 
-        <div className="auth-box">
-          <IonInput
-            className="auth-input"
-            placeholder="Full Name"
-            value={username}
-            onIonChange={(e) => setUsername(e.detail.value || "")}
+        <form className="auth-box" onSubmit={handleSubmit(onSubmit)}>
+          {/* Full Name */}
+          <Controller
+            name="username"
+            control={control}
+            rules={{ required: "Full name is required" }}
+            render={({ field }) => (
+              <IonInput
+                {...field}
+                className="auth-input"
+                placeholder="Full Name"
+              />
+            )}
           />
+          {errors.username && (
+            <IonText color="danger">
+              <p className="auth-error">{errors.username.message}</p>
+            </IonText>
+          )}
 
-          <IonInput
-            className="auth-input"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onIonChange={(e) => setEmail(e.detail.value || "")}
+          {/* Email */}
+          <Controller
+            name="email"
+            control={control}
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Enter a valid email address",
+              },
+            }}
+            render={({ field }) => (
+              <IonInput
+                {...field}
+                type="email"
+                className="auth-input"
+                placeholder="Email"
+              />
+            )}
           />
+          {errors.email && (
+            <IonText color="danger">
+              <p className="auth-error">{errors.email.message}</p>
+            </IonText>
+          )}
 
-          <IonInput
-            className="auth-input"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onIonChange={(e) => setPassword(e.detail.value || "")}
+          {/* Password */}
+          <Controller
+            name="password"
+            control={control}
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+            }}
+            render={({ field }) => (
+              <IonInput
+                {...field}
+                type="password"
+                className="auth-input"
+                placeholder="Password"
+              />
+            )}
           />
+          {errors.password && (
+            <IonText color="danger">
+              <p className="auth-error">{errors.password.message}</p>
+            </IonText>
+          )}
 
-          <IonButton expand="block" className="auth-btn" onClick={handelSignup}>
-            Register
+          {/* Submit */}
+          <IonButton
+            expand="block"
+            className="auth-btn"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Creating account..." : "Register"}
           </IonButton>
 
           {error && (
@@ -110,9 +170,9 @@ const Signup: React.FC = () => {
               Login
             </span>
           </div>
-        </div>
+        </form>
 
-        //alert for org
+        {/* Organization Alert */}
         <IonAlert
           isOpen={showAlert}
           header="Create Organization"
