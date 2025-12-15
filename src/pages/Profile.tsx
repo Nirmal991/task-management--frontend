@@ -4,6 +4,7 @@ import {
   IonContent,
   IonIcon
 } from "@ionic/react";
+import { useHistory } from "react-router-dom";
 
 import {
   settingsOutline,
@@ -15,20 +16,28 @@ import {
 import "./Profile.css";
 
 const Profile: React.FC = () => {
+  const history = useHistory();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("authUser");
+    localStorage.removeItem("orgInfo");
+
+    history.push("/home"); 
+  };
+
   return (
     <IonPage>
-
       <IonContent fullscreen className="profile-content">
         <div className="profile-gradient"></div>
 
-        {/* ============== USER PROFILE BOX ============== */}
         <section className="profile-top">
           <div className="profile-avatar">JD</div>
           <h2 className="profile-name">John Doe</h2>
           <p className="profile-email">john.doe@example.com</p>
         </section>
 
-        {/* ============== USER STATS ============== */}
         <section className="profile-stats-card">
           <div className="profile-stat">
             <h3>8</h3>
@@ -44,9 +53,7 @@ const Profile: React.FC = () => {
           </div>
         </section>
 
-        {/* ============== LIST SETTINGS ============== */}
         <section className="profile-list">
-
           <div className="profile-list-item">
             <IonIcon icon={settingsOutline} className="profile-icon" />
             <span>Settings</span>
@@ -61,17 +68,13 @@ const Profile: React.FC = () => {
             <IonIcon icon={shieldCheckmarkOutline} className="profile-icon" />
             <span>Privacy Policy</span>
           </div>
-
         </section>
 
-        {/* ============== LOGOUT BUTTON ============== */}
-        <button className="profile-logout-btn">
+        <button className="profile-logout-btn" onClick={handleLogout}>
           <IonIcon icon={logOutOutline} className="logout-icon" />
           Logout
         </button>
-
       </IonContent>
-
     </IonPage>
   );
 };

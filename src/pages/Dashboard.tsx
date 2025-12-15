@@ -12,6 +12,7 @@ import {
   IonProgressBar,
 } from "@ionic/react";
 import {
+  chevronBackOutline,
   gridOutline,
   checkmarkCircleOutline,
   timeOutline,
@@ -24,8 +25,11 @@ import "./Dashboard.css";
 import { useHistory } from "react-router";
 
 const Dashboard: React.FC = () => {
-
   const history = useHistory();
+
+  const handleBack = () => {
+    history.push("/home"); // you can replace with history.push()
+  };
 
   return (
     <IonPage>
@@ -38,12 +42,21 @@ const Dashboard: React.FC = () => {
               <p className="dash-subtitle">
                 Here's what's happening with your projects
               </p>
+
+              <IonIcon
+                icon={chevronBackOutline}
+                className="task-back-icon"
+                onClick={handleBack}
+              />
             </div>
 
             {/* RIGHT: notification + search */}
             <div className="dash-header-right">
               <button className="dash-icon-button">
-                <IonIcon onClick={() => history.push("/notifications")} icon={notificationsOutline} />
+                <IonIcon
+                  onClick={() => history.push("/notifications")}
+                  icon={notificationsOutline}
+                />
               </button>
 
               <div className="dash-search">

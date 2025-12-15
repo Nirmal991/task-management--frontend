@@ -21,7 +21,7 @@ interface SignupForm {
 const Signup: React.FC = () => {
   const history = useHistory();
 
-  const [showAlert, setShowAlert] = useState(false);
+  
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -50,7 +50,7 @@ const Signup: React.FC = () => {
       localStorage.setItem("authToken", token);
       localStorage.setItem("authUser", JSON.stringify(data));
 
-      setShowAlert(true);
+      history.push("/dashboard")
     } catch (err: any) {
       console.log("SignUp Error: ", err);
       setError(
@@ -171,38 +171,6 @@ const Signup: React.FC = () => {
             </span>
           </div>
         </form>
-
-        {/* Organization Alert */}
-        <IonAlert
-          isOpen={showAlert}
-          header="Create Organization"
-          message="Enter the name and domain of your organization"
-          inputs={[
-            {
-              name: "org",
-              type: "text",
-              placeholder: "Organization Name",
-            },
-            {
-              name: "domain",
-              type: "text",
-              placeholder: "Domain Name",
-            },
-          ]}
-          buttons={[
-            {
-              text: "Cancel",
-              role: "cancel",
-              handler: () => setShowAlert(false),
-            },
-            {
-              text: "Create",
-              handler: (data) => {
-                handleOrgSubmit(data.org, data.domain);
-              },
-            },
-          ]}
-        />
       </IonContent>
     </IonPage>
   );
