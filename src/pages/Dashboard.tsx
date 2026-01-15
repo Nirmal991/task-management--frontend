@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   IonPage,
   IonHeader,
@@ -10,6 +10,7 @@ import {
   IonIcon,
   IonText,
   IonProgressBar,
+  IonAlert,
 } from "@ionic/react";
 import {
   chevronBackOutline,
@@ -23,40 +24,61 @@ import {
 
 import "./Dashboard.css";
 import { useHistory } from "react-router";
+import { CreateOrg } from "../store";
 
 const Dashboard: React.FC = () => {
   const history = useHistory();
+  const [showCreateOrg, setShowCreateOrg] = useState(false);
 
   const handleBack = () => {
-    history.push("/home"); // you can replace with history.push()
+    history.push("/home");
+  };
+
+  const handleCreateOrg = async (orgName: string, domain: string) => {
+    if (!orgName || !domain) return;
+
+    try {
+      const response = await CreateOrg(orgName, domain);
+      localStorage.setItem("orgInfo", JSON.stringify(response.data));
+    } catch (error) {
+      console.log("Create Org Error:", error);
+    }
   };
 
   return (
     <IonPage>
-      <IonHeader translucent={true} className="dash-header">
+      <IonHeader translucent className="dash-header">
         <IonToolbar className="dash-toolbar">
           <div className="dash-header-row">
-            {/* LEFT: greeting */}
+            
             <div className="dash-header-left">
               <h1 className="dash-title">Good Morning 👋</h1>
               <p className="dash-subtitle">
                 Here's what's happening with your projects
               </p>
 
-              <IonIcon
-                icon={chevronBackOutline}
-                className="task-back-icon"
-                onClick={handleBack}
-              />
+              <div className="dash-left-actions">
+                <IonIcon
+                  icon={chevronBackOutline}
+                  className="task-back-icon"
+                  onClick={handleBack}
+                />
+
+                <button
+                  className="dash-create-org-btn"
+                  onClick={() => setShowCreateOrg(true)}
+                >
+                  Create Org
+                </button>
+              </div>
             </div>
 
-            {/* RIGHT: notification + search */}
             <div className="dash-header-right">
-              <button className="dash-icon-button">
-                <IonIcon
-                  onClick={() => history.push("/notifications")}
-                  icon={notificationsOutline}
-                />
+              <button
+                className="dash-icon-button"
+                onClick={() => history.push("/notifications")}
+              >
+                <IonIcon icon={notificationsOutline} />
               </button>
 
               <div className="dash-search">
@@ -73,10 +95,9 @@ const Dashboard: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen className="dash-content">
-        {/* gradient background behind top section */}
         <div className="dash-gradient" />
 
-        {/* Stats cards */}
+        {/* STATS */}
         <section className="dash-stats">
           <IonGrid>
             <IonRow>
@@ -125,14 +146,13 @@ const Dashboard: React.FC = () => {
           </IonGrid>
         </section>
 
-        {/* Recent projects */}
+        {/* RECENT PROJECTS */}
         <section className="dash-projects">
           <div className="dash-projects-header">
             <h2>Recent Projects</h2>
             <button className="link-button">View All</button>
           </div>
 
-          {/* Project card 1 */}
           <div className="project-card">
             <div className="project-header">
               <h3>Mobile App Redesign</h3>
@@ -140,14 +160,12 @@ const Dashboard: React.FC = () => {
             </div>
             <div className="project-progress-label">Progress</div>
             <IonProgressBar
-              className="project-progress-bar primary"
               value={0.75}
-              type="determinate"
+              className="project-progress-bar primary"
             />
             <div className="project-percentage">75%</div>
           </div>
 
-          {/* Project card 2 */}
           <div className="project-card">
             <div className="project-header">
               <h3>Website Launch</h3>
@@ -155,13 +173,44 @@ const Dashboard: React.FC = () => {
             </div>
             <div className="project-progress-label">Progress</div>
             <IonProgressBar
-              className="project-progress-bar secondary"
               value={0.45}
-              type="determinate"
+              className="project-progress-bar secondary"
             />
             <div className="project-percentage">45%</div>
           </div>
         </section>
+
+        <IonAlert
+          isOpen={showCreateOrg}
+          header="Create Organization"
+          message="Enter your organization details"
+          inputs={[
+            {
+              name: "org",
+              type: "text",
+              placeholder: "Organization Name",
+            },
+            {
+              name: "domain",
+              type: "text",
+              placeholder: "Domain Name",
+            },
+          ]}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              handler: () => setShowCreateOrg(false),
+            },
+            {
+              text: "Create",
+              handler: (data) => {
+                handleCreateOrg(data.org, data.domain);
+                setShowCreateOrg(false);
+              },
+            },
+          ]}
+        />
       </IonContent>
     </IonPage>
   );

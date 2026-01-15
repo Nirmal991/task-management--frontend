@@ -17,11 +17,6 @@ api.interceptors.request.use((config) => {
 });
 
 export default api;
-
-
-
-
-
 // export const api = async (url: string, options:RequestInit ={}) => {
 //     return fetch(Base_URL + url,{
 //         credentials: "include",

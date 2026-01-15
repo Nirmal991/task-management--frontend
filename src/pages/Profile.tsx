@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   IonPage,
   IonContent,
@@ -14,6 +14,7 @@ import {
 } from "ionicons/icons";
 
 import "./Profile.css";
+import { createProject } from "../store";
 
 const Profile: React.FC = () => {
   const history = useHistory();
@@ -27,15 +28,25 @@ const Profile: React.FC = () => {
     history.push("/home"); 
   };
 
+  const user = useMemo(() => {
+    const storedUser = localStorage.getItem("authUser");
+    return storedUser ? JSON.parse(storedUser) : null
+  }, [])
+
+  const name = user?.username || "user";
+  const email = user?.email || "example@gmail.com";
+
+  const avatarLetter = name.charAt(0).toUpperCase(); 
+
   return (
     <IonPage>
       <IonContent fullscreen className="profile-content">
         <div className="profile-gradient"></div>
 
         <section className="profile-top">
-          <div className="profile-avatar">JD</div>
-          <h2 className="profile-name">John Doe</h2>
-          <p className="profile-email">john.doe@example.com</p>
+          <div className="profile-avatar">{avatarLetter}</div>
+          <h2 className="profile-name">{name}</h2>
+          <p className="profile-email">{email}</p>
         </section>
 
         <section className="profile-stats-card">

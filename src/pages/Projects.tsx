@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   IonPage,
   IonHeader,
@@ -8,12 +8,26 @@ import {
   IonSearchbar,
   IonIcon,
   IonProgressBar,
+   IonAlert,
 } from "@ionic/react";
 import { ellipsisVertical, add } from "ionicons/icons";
 
 import "./Projects.css";
 
 const Projects: React.FC = () => {
+
+
+const [showProject, setShowProject] = useState(false);
+
+  // const handleCreateProject = async () => {
+  //   try {
+  //     const response = await createProject(
+  //     )
+  //   } catch (error) {
+      
+  //   }
+  // }
+
   return (
     <IonPage>
       <IonHeader translucent className="proj-header">
@@ -40,7 +54,7 @@ const Projects: React.FC = () => {
           <div className="proj-section-header">
             <span className="proj-section-title">ALL PROJECTS (5)</span>
 
-            <button className="proj-new-btn">
+            <button className="proj-new-btn" onClick={()=> setShowProject(true)}>
               <IonIcon icon={add} className="proj-new-icon" />
               <span>New</span>
             </button>
@@ -133,6 +147,45 @@ const Projects: React.FC = () => {
             </div>
           </div>
         </section>
+
+
+        <IonAlert
+  isOpen={showProject}
+  header="Create Project"
+  message="Enter project details & select members"
+  inputs={[
+    {
+      name: "project",
+      type: "text",
+      placeholder: "Project Name",
+    },
+    {
+      name: "description",
+      type: "text",
+      placeholder: "Project Description",
+    },
+    {
+      type: "radio",
+      label: "Select Members",
+      value: "",
+      checked: true,
+      disabled: true,
+    },
+  ]}
+  buttons={[
+    {
+      text: "Cancel",
+      role: "cancel",
+      handler: () => setShowProject(false),
+    },
+    {
+      text: "Create",
+      handler: () => {
+        setShowProject(false);
+      },
+    },
+  ]}
+/>
       </IonContent>
     </IonPage>
   );
