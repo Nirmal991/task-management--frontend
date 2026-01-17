@@ -31,6 +31,10 @@ export const getOrg = (orgId: string) => {
   return api.get(`/org/${orgId}`)
 }
 
+export const getMembersOfOrg = (orgId: string) => {
+  return api.get(`/org/${orgId}/members`)
+}
+
 //ProjectAPI
 
 export const createProject = (orgId: string, name: string, description: string, userIds: string[] = []) => {

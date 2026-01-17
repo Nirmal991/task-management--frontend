@@ -4,22 +4,21 @@ import {
   IonHeader,
   IonToolbar,
   IonContent,
+  IonIcon,
   IonGrid,
   IonRow,
   IonCol,
-  IonIcon,
-  IonText,
   IonProgressBar,
   IonAlert,
+  IonText,
 } from "@ionic/react";
 import {
-  chevronBackOutline,
+  notificationsOutline,
+  searchOutline,
   gridOutline,
   checkmarkCircleOutline,
   timeOutline,
   alertCircleOutline,
-  notificationsOutline,
-  searchOutline,
 } from "ionicons/icons";
 
 import "./Dashboard.css";
@@ -27,6 +26,7 @@ import { useHistory } from "react-router";
 import { CreateOrg } from "../store";
 
 const Dashboard: React.FC = () => {
+
   const history = useHistory();
   const [showCreateOrg, setShowCreateOrg] = useState(false);
 
@@ -47,49 +47,30 @@ const Dashboard: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader translucent className="dash-header">
+      <IonHeader className="dash-header">
         <IonToolbar className="dash-toolbar">
-          <div className="dash-header-row">
-            
-            <div className="dash-header-left">
-              <h1 className="dash-title">Good Morning 👋</h1>
-              <p className="dash-subtitle">
-                Here's what's happening with your projects
-              </p>
-
-              <div className="dash-left-actions">
-                <IonIcon
-                  icon={chevronBackOutline}
-                  className="task-back-icon"
-                  onClick={handleBack}
-                />
-
-                <button
-                  className="dash-create-org-btn"
-                  onClick={() => setShowCreateOrg(true)}
-                >
-                  Create Org
-                </button>
-              </div>
+          {/* TITLE */}
+          <div className="dash-title-row">
+            <div>
+              <h1>Good Morning 👋</h1>
+              <p>Here's what's happening with your projects</p>
             </div>
 
-            <div className="dash-header-right">
-              <button
-                className="dash-icon-button"
-                onClick={() => history.push("/notifications")}
-              >
-                <IonIcon icon={notificationsOutline} />
-              </button>
-
+            <div className="dash-search-wrap">
+              <IonIcon onClick={() => history.push("/notifications")} icon={notificationsOutline} />
               <div className="dash-search">
-                <IonIcon icon={searchOutline} className="dash-search-icon" />
-                <input
-                  className="dash-search-input"
-                  placeholder="Search"
-                  type="text"
-                />
+                <IonIcon icon={searchOutline} />
+                <input placeholder="Search" />
               </div>
             </div>
+          </div>
+
+          {/* ACTION BUTTONS */}
+          <div className="dash-action-row">
+            <button className="dash-pill-btn"
+            onClick={() => setShowCreateOrg(true)}
+            >Create Org</button>
+            <button className="dash-pill-btn">Org Info</button>
           </div>
         </IonToolbar>
       </IonHeader>
@@ -139,7 +120,7 @@ const Dashboard: React.FC = () => {
                     <IonIcon icon={alertCircleOutline} />
                   </div>
                   <div className="stat-value">3</div>
-                  <IonText className="stat-label">Overdue</IonText>
+                  <IonText   className="stat-label">Overdue</IonText>
                 </div>
               </IonCol>
             </IonRow>

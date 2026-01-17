@@ -8,25 +8,39 @@ import {
   IonSearchbar,
   IonIcon,
   IonProgressBar,
-   IonAlert,
+  IonAlert,
+  IonModal,
+  IonButton,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonCheckbox,
 } from "@ionic/react";
 import { ellipsisVertical, add } from "ionicons/icons";
 
 import "./Projects.css";
 
 const Projects: React.FC = () => {
+  const [showProject, setShowProject] = useState(false);
+  const [showMembersModal, setShowMembersModal] = useState(false);
 
+  // UI-only dummy members
+  const members = [
+    { id: "1", name: "John Doe", email: "jhon@gmail.com" },
+    { id: "2", name: "Sarah Smith", email: "sahara@gmail.com" },
+    { id: "3", name: "Mike Johnson", email: "mike@gmail.com" },
+    { id: "4", name: "Emma Brown", email: "emma#gmail.com" },
+  ];
 
-const [showProject, setShowProject] = useState(false);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
 
-  // const handleCreateProject = async () => {
-  //   try {
-  //     const response = await createProject(
-  //     )
-  //   } catch (error) {
-      
-  //   }
-  // }
+  const toggleMember = (id: string) => {
+    setSelectedMembers((prev) =>
+      prev.includes(id)
+        ? prev.filter((m) => m !== id)
+        : [...prev, id]
+    );
+  };
 
   return (
     <IonPage>
@@ -37,10 +51,9 @@ const [showProject, setShowProject] = useState(false);
       </IonHeader>
 
       <IonContent fullscreen className="proj-content">
-        {/* blue gradient background */}
         <div className="proj-gradient" />
 
-        {/* search bar card */}
+        {/* Search */}
         <section className="proj-search-wrapper">
           <IonSearchbar
             placeholder="Search projects..."
@@ -49,18 +62,21 @@ const [showProject, setShowProject] = useState(false);
           />
         </section>
 
-        {/* section header */}
+        {/* Header */}
         <section className="proj-section">
           <div className="proj-section-header">
             <span className="proj-section-title">ALL PROJECTS (5)</span>
 
-            <button className="proj-new-btn" onClick={()=> setShowProject(true)}>
+            <button
+              className="proj-new-btn"
+              onClick={() => setShowProject(true)}
+            >
               <IonIcon icon={add} className="proj-new-icon" />
               <span>New</span>
             </button>
           </div>
 
-          {/* Project card 1 */}
+          {/* PROJECT CARDS (STATIC UI) */}
           <div className="proj-card">
             <div className="proj-card-header">
               <h3>Mobile App Redesign</h3>
@@ -68,124 +84,94 @@ const [showProject, setShowProject] = useState(false);
             </div>
 
             <div className="proj-badge in-progress">In Progress</div>
-
             <p className="proj-tasks">6/8 tasks completed</p>
 
             <div className="proj-progress-row">
-              <IonProgressBar
-                className="proj-progress-bar primary"
-                value={0.75}
-              />
+              <IonProgressBar value={0.75} className="proj-progress-bar primary" />
               <span className="proj-progress-percent">75%</span>
             </div>
 
             <div className="proj-members-row">
-              <div className="proj-members-avatars">
-                <span className="avatar avatar-1" />
-                <span className="avatar avatar-2" />
-                <span className="avatar avatar-3" />
-              </div>
               <span className="proj-members-label">5 members</span>
-            </div>
-          </div>
-
-          {/* Project card 2 */}
-          <div className="proj-card">
-            <div className="proj-card-header">
-              <h3>Website Launch</h3>
-              <IonIcon icon={ellipsisVertical} className="proj-more-icon" />
-            </div>
-
-            <div className="proj-badge in-progress">In Progress</div>
-
-            <p className="proj-tasks">5/12 tasks completed</p>
-
-            <div className="proj-progress-row">
-              <IonProgressBar
-                className="proj-progress-bar secondary"
-                value={0.45}
-              />
-              <span className="proj-progress-percent">45%</span>
-            </div>
-
-            <div className="proj-members-row">
-              <div className="proj-members-avatars">
-                <span className="avatar avatar-1" />
-                <span className="avatar avatar-2" />
-                <span className="avatar avatar-3" />
-              </div>
-              <span className="proj-members-label">3 members</span>
-            </div>
-          </div>
-
-          {/* Project card 3 (simple state) */}
-          <div className="proj-card">
-            <div className="proj-card-header">
-              <h3>Marketing Campaign</h3>
-              <IonIcon icon={ellipsisVertical} className="proj-more-icon" />
-            </div>
-
-            <div className="proj-badge near-completion">Near Completion</div>
-
-            <p className="proj-tasks">10/11 tasks completed</p>
-
-            <div className="proj-progress-row">
-              <IonProgressBar
-                className="proj-progress-bar primary"
-                value={0.9}
-              />
-              <span className="proj-progress-percent">90%</span>
-            </div>
-
-            <div className="proj-members-row">
-              <div className="proj-members-avatars">
-                <span className="avatar avatar-1" />
-                <span className="avatar avatar-2" />
-                <span className="avatar avatar-3" />
-              </div>
-              <span className="proj-members-label">4 members</span>
             </div>
           </div>
         </section>
 
-
+        {/* CREATE PROJECT ALERT */}
         <IonAlert
-  isOpen={showProject}
-  header="Create Project"
-  message="Enter project details & select members"
-  inputs={[
-    {
-      name: "project",
-      type: "text",
-      placeholder: "Project Name",
-    },
-    {
-      name: "description",
-      type: "text",
-      placeholder: "Project Description",
-    },
-    {
-      type: "radio",
-      label: "Select Members",
-      value: "",
-      checked: true,
-      disabled: true,
-    },
-  ]}
-  buttons={[
-    {
-      text: "Cancel",
-      role: "cancel",
-      handler: () => setShowProject(false),
-    },
-    {
-      text: "Create",
-      handler: () => {
-        setShowProject(false);
-      },
-    },
-  ]}
-/>
+          isOpen={showProject}
+          header="Create Project"
+          message="Enter project details"
+          inputs={[
+            {
+              name: "project",
+              type: "text",
+              placeholder: "Project Name",
+            },
+            {
+              name: "description",
+              type: "text",
+              placeholder: "Project Description",
+            },
+          ]}
+          buttons={[
+            {
+              text: "Add Members",
+              handler: () => {
+                setShowProject(false);
+                setShowMembersModal(true);
+              },
+            },
+            {
+              text: "Cancel",
+              role: "cancel",
+              handler: () => setShowProject(false),
+            },
+            {
+              text: "Create",
+              handler: () => setShowProject(false),
+            },
+          ]}
+        />
+
+        {/* MEMBERS MODAL */}
+        <IonModal
+          isOpen={showMembersModal}
+          onDidDismiss={() => setShowMembersModal(false)}
+        >
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Select Members</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+
+          <IonContent className="ion-padding">
+            <IonList>
+              {members.map((user) => (
+                <IonItem key={user.id}>
+                  <IonCheckbox
+                    slot="start"
+                    checked={selectedMembers.includes(user.id)}
+                    onIonChange={() => toggleMember(user.id)}
+                  />
+                  <IonLabel>
+                    <h2>{user.name}</h2>
+                    <p className="member-email">{user.email}</p>
+                  </IonLabel>
+                </IonItem>
+              ))}
+            </IonList>
+
+            <IonButton
+              expand="block"
+              className="ion-margin-top"
+              onClick={() => setShowMembersModal(false)}
+            >
+              Done
+            </IonButton>
+          </IonContent>
+        </IonModal>
+
       </IonContent>
     </IonPage>
   );

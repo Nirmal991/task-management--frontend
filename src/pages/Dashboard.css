@@ -1,123 +1,85 @@
-/* ===========================================
-   PAGE BASE
-=========================================== */
-.dash-content {
-  --background: #f5f6fb;
-  position: relative;
-}
-
-/* Blue gradient top section */
-.dash-gradient {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 220px;
-  background: linear-gradient(135deg, #3b5bff, #5c7dff);
+/* HEADER */
+.dash-header {
+  background: linear-gradient(135deg, #4f6bff, #6a8cff);
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
-  z-index: 0;
-}
-
-/* ===========================================
-   HEADER TOOLBAR 
-=========================================== */
-.dash-header {
-  background: transparent;
 }
 
 .dash-toolbar {
   --background: transparent;
-  --border-width: 0;
+  padding: 16px;
 }
 
-/* Row container: LEFT title + RIGHT search/buttons */
-.dash-header-row {
+/* TITLE ROW */
+.dash-title-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 16px 16px 6px;
+  align-items: center;
 }
 
-/* ===========================================
-   LEFT SECTION (Good Morning)
-=========================================== */
-.dash-header-left {
-  flex: 1;
-  min-width: 0;
-}
-
-.dash-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
+.dash-title-row h1 {
   margin: 0;
+  font-size: 22px;
+  color: #fff;
 }
 
-.dash-subtitle {
-  margin-top: 4px;
+.dash-title-row p {
+  margin: 4px 0 0;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255,255,255,0.9);
 }
 
-/* ===========================================
-   RIGHT SECTION — Notification + Search
-=========================================== */
-.dash-header-right {
+/* SEARCH */
+.dash-search-wrap {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 10px;
 }
 
-/* Notification Circle Button */
-.dash-icon-button {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-}
-
-.dash-icon-button ion-icon {
-  color: #ffffff;
+.dash-search-wrap ion-icon {
+  color: #fff;
   font-size: 20px;
 }
 
-/* Search pill */
 .dash-search {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,0.25);
+  padding: 6px 12px;
   border-radius: 999px;
-  padding: 5px 10px;
 }
 
-.dash-search-icon {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.9);
-  margin-right: 4px;
+.dash-search ion-icon {
+  color: #fff;
+  margin-right: 6px;
 }
 
-.dash-search-input {
+.dash-search input {
+  background: transparent;
   border: none;
   outline: none;
-  background: transparent;
-  color: #ffffff;
+  color: #fff;
+  width: 90px;
+}
+
+/* ACTION BUTTONS */
+.dash-action-row {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dash-pill-btn {
+  background: rgba(255,255,255,0.25);
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: #fff;
   font-size: 13px;
-  width: 90px;  /* Adjust this if needed */
+  font-weight: 600;
 }
 
-.dash-search-input::placeholder {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* ===========================================
-   STATS SECTION
-=========================================== */
+/* CONTENT */
 .dash-stats {
   padding: 0 16px;
   padding-top: 8px;
@@ -292,12 +254,3 @@
   transform: scale(0.96);
   opacity: 0.85;
 }
-
-
-/* Back icon */
-.task-back-icon {
-  font-size: 22px;
-  color: #ffffff;
-  cursor: pointer;
-}
-
