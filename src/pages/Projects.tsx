@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonPage,
   IonHeader,
@@ -10,29 +10,70 @@ import {
   IonProgressBar,
   IonAlert,
   IonModal,
-  IonButton,
+  IonButton,  
   IonList,
   IonItem,
   IonLabel,
   IonCheckbox,
-} from "@ionic/react";
+  IonSpinner,
+} from "@ionic/react";  
 import { ellipsisVertical, add } from "ionicons/icons";
 
 import "./Projects.css";
+import { getMembersOfOrg } from "../store";
+
+type Member = {
+  id: string;
+  name: string;
+  email: string;
+};
 
 const Projects: React.FC = () => {
   const [showProject, setShowProject] = useState(false);
   const [showMembersModal, setShowMembersModal] = useState(false);
-
-  // UI-only dummy members
-  const members = [
-    { id: "1", name: "John Doe", email: "jhon@gmail.com" },
-    { id: "2", name: "Sarah Smith", email: "sahara@gmail.com" },
-    { id: "3", name: "Mike Johnson", email: "mike@gmail.com" },
-    { id: "4", name: "Emma Brown", email: "emma#gmail.com" },
-  ];
-
+  const [members, setMembers] = useState<Member[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [loadingMembers, setLoadingMembers] = useState(false);
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+
+  // Get active org from localStorage
+  const getActiveOrgId = () => {
+    try {
+      const activeOrg = localStorage.getItem("orgInfo");
+      if (activeOrg) {
+        const parsedOrg = JSON.parse(activeOrg);
+        return parsedOrg.id;
+      }
+    } catch (e) {
+      console.error("Error parsing active org", e);
+    }
+    return null;
+  };
+
+  // Fetch members when modal opens
+  const fetchMembers = async () => {
+    const orgId = getActiveOrgId();
+    
+    if (!orgId) {
+      console.error("No active organization selected");
+      return;
+    }
+
+    try {
+      setLoadingMembers(true);
+      const response = await getMembersOfOrg(orgId);
+      
+      // Adapt based on your API response structure
+      const membersData = response.data.data || response.data;
+      setMembers(membersData);
+    } catch (error) {
+      console.error("Failed to fetch members:", error);
+      // Optionally show an error toast/alert here
+    } finally {
+      setLoadingMembers(false);
+    }
+  };
 
   const toggleMember = (id: string) => {
     setSelectedMembers((prev) =>
@@ -40,6 +81,28 @@ const Projects: React.FC = () => {
         ? prev.filter((m) => m !== id)
         : [...prev, id]
     );
+  };
+
+  const handleAddMembers = () => {
+    setShowProject(false);
+    setShowMembersModal(true);
+    // Fetch members when opening the modal
+    fetchMembers();
+  };
+
+  const handleCreateProject = () => {
+    // Here you would call your create project API
+    console.log("Creating project:", {
+      name: projectName,
+      description: projectDescription,
+      members: selectedMembers,
+    });
+    
+    // Reset form
+    setProjectName("");
+    setProjectDescription("");
+    setSelectedMembers([]);
+    setShowProject(false);
   };
 
   return (
@@ -107,29 +170,40 @@ const Projects: React.FC = () => {
               name: "project",
               type: "text",
               placeholder: "Project Name",
+              value: projectName,
             },
             {
               name: "description",
               type: "text",
               placeholder: "Project Description",
+              value: projectDescription,
             },
           ]}
           buttons={[
             {
-              text: "Add Members",
+              text: "Cancel",
+              role: "cancel",
               handler: () => {
+                setProjectName("");
+                setProjectDescription("");
                 setShowProject(false);
-                setShowMembersModal(true);
               },
             },
             {
-              text: "Cancel",
-              role: "cancel",
-              handler: () => setShowProject(false),
+              text: "Add Members",
+              handler: (data) => {
+                setProjectName(data.project || "");
+                setProjectDescription(data.description || "");
+                handleAddMembers();
+              },
             },
             {
               text: "Create",
-              handler: () => setShowProject(false),
+              handler: (data) => {
+                setProjectName(data.project || "");
+                setProjectDescription(data.description || "");
+                handleCreateProject();
+              },
             },
           ]}
         />
@@ -146,28 +220,48 @@ const Projects: React.FC = () => {
           </IonHeader>
 
           <IonContent className="ion-padding">
-            <IonList>
-              {members.map((user) => (
-                <IonItem key={user.id}>
-                  <IonCheckbox
-                    slot="start"
-                    checked={selectedMembers.includes(user.id)}
-                    onIonChange={() => toggleMember(user.id)}
-                  />
-                  <IonLabel>
-                    <h2>{user.name}</h2>
-                    <p className="member-email">{user.email}</p>
-                  </IonLabel>
-                </IonItem>
-              ))}
-            </IonList>
+            {loadingMembers && (
+              <div style={{ textAlign: "center", padding: "20px" }}>
+                <IonSpinner />
+                <p>Loading members...</p>
+              </div>
+            )}
+
+            {!loadingMembers && members.length === 0 && (
+              <div style={{ textAlign: "center", padding: "20px" }}>
+                <p>No members found in this organization</p>
+              </div>
+            )}
+
+            {!loadingMembers && members.length > 0 && (
+              <IonList key="members-list">
+                {members.map((user) => (
+                  <IonItem key={user.id}>
+                    <IonCheckbox
+                      slot="start"
+                      checked={selectedMembers.includes(user.id)}
+                      onIonChange={() => toggleMember(user.id)}
+                    />
+                    <IonLabel>
+                      <h2>{user.name}</h2>
+                      <p className="member-email">{user.email}</p>
+                    </IonLabel>
+                  </IonItem>
+                ))}
+              </IonList>
+            )}
 
             <IonButton
               expand="block"
               className="ion-margin-top"
-              onClick={() => setShowMembersModal(false)}
+              onClick={() => {
+                console.log("Selected members:", selectedMembers);
+                setShowMembersModal(false);
+                // Optionally reopen the project alert to continue
+                setShowProject(true);
+              }}
             >
-              Done
+              Done ({selectedMembers.length} selected)
             </IonButton>
           </IonContent>
         </IonModal>

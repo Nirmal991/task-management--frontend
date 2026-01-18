@@ -11,6 +11,13 @@ import {
   IonProgressBar,
   IonAlert,
   IonText,
+  IonModal,
+  IonTitle,
+  IonList,
+  IonItem,
+  IonCheckbox,
+  IonLabel,
+  IonButton,
 } from "@ionic/react";
 import {
   notificationsOutline,
@@ -23,12 +30,26 @@ import {
 
 import "./Dashboard.css";
 import { useHistory } from "react-router";
-import { CreateOrg } from "../store";
+import { CreateOrg, getAllUserOrgs } from "../store";
 
 const Dashboard: React.FC = () => {
 
   const history = useHistory();
   const [showCreateOrg, setShowCreateOrg] = useState(false);
+  const [showOrgModal, setShowOrgModal] = useState(false);
+  const [selectedOrg, setSelectedOrg] = useState<string | null>(null);
+
+  type Org = {
+    id: string;
+    name: string;
+    domain: string;
+  };
+
+  const [orgs, setOrgs] = useState<Org[]>([]);
+  const [loadingOrgs, setLoadingOrgs] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem("authUser") || "{}");
+  const userId = user?.id;
 
   const handleBack = () => {
     history.push("/home");
@@ -42,6 +63,15 @@ const Dashboard: React.FC = () => {
       localStorage.setItem("orgInfo", JSON.stringify(response.data));
     } catch (error) {
       console.log("Create Org Error:", error);
+    }
+  };
+
+  const handleOrgSelection = (orgId: string) => {
+    // Toggle selection - if already selected, deselect; otherwise select this one
+    if (selectedOrg === orgId) {
+      setSelectedOrg(null);
+    } else {
+      setSelectedOrg(orgId);
     }
   };
 
@@ -68,9 +98,42 @@ const Dashboard: React.FC = () => {
           {/* ACTION BUTTONS */}
           <div className="dash-action-row">
             <button className="dash-pill-btn"
-            onClick={() => setShowCreateOrg(true)}
+              onClick={() => setShowCreateOrg(true)}
             >Create Org</button>
-            <button className="dash-pill-btn">Org Info</button>
+            <button
+              className="dash-pill-btn"
+              onClick={async () => {
+                if (!userId) return;
+
+                try {
+                  setLoadingOrgs(true);
+                  const res = await getAllUserOrgs(userId);
+
+                  // adapt if backend response structure differs
+                  setOrgs(res.data.data || res.data);
+                  
+                  // Load previously selected org if exists
+                  const activeOrg = localStorage.getItem("activeOrg");
+                  if (activeOrg) {
+                    try {
+                      const parsedOrg = JSON.parse(activeOrg);
+                      setSelectedOrg(parsedOrg.id);
+                    } catch (e) {
+                      console.error("Error parsing active org", e);
+                    }
+                  }
+                  
+                  setShowOrgModal(true);
+                } catch (err) {
+                  console.error("Failed to load orgs", err);
+                } finally {
+                  setLoadingOrgs(false);
+                }
+              }}
+            >
+              Org Info
+            </button>
+
           </div>
         </IonToolbar>
       </IonHeader>
@@ -120,7 +183,7 @@ const Dashboard: React.FC = () => {
                     <IonIcon icon={alertCircleOutline} />
                   </div>
                   <div className="stat-value">3</div>
-                  <IonText   className="stat-label">Overdue</IonText>
+                  <IonText className="stat-label">Overdue</IonText>
                 </div>
               </IonCol>
             </IonRow>
@@ -192,6 +255,72 @@ const Dashboard: React.FC = () => {
             },
           ]}
         />
+
+        <IonModal
+          isOpen={showOrgModal}
+          onDidDismiss={() => setShowOrgModal(false)}
+        >
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Select Organization</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+
+          <IonContent className="ion-padding">
+            {loadingOrgs && (
+              <IonList>
+                <IonItem key="loading-item">
+                  <IonLabel>Loading organizations...</IonLabel>
+                </IonItem>
+              </IonList>
+            )}
+
+            {!loadingOrgs && orgs.length === 0 && (
+              <IonList>
+                <IonItem key="no-orgs-item">
+                  <IonLabel>No organizations found</IonLabel>
+                </IonItem>
+              </IonList>
+            )}
+
+            {!loadingOrgs && orgs.length > 0 && (
+              <IonList key="org-list">
+                {orgs.map((org) => (
+                  <IonItem key={org.id}>
+                    <IonCheckbox
+                      slot="start"
+                      checked={selectedOrg === org.id}
+                      onIonChange={() => handleOrgSelection(org.id)}
+                    />
+                    <IonLabel>
+                      <h2>{org.name}</h2>
+                      <p className="org-domain">{org.domain}</p>
+                    </IonLabel>
+                  </IonItem>
+                ))}
+              </IonList>
+            )}
+
+            <IonButton
+              expand="block"
+              className="ion-margin-top"
+              onClick={() => {
+                const org = orgs.find((o) => o.id === selectedOrg);
+                if (org) {
+                  localStorage.setItem("activeOrg", JSON.stringify(org));
+                  localStorage.setItem("activeOrgName", org.name);
+                  console.log("Selected Organization:", org.name);
+                }
+                setShowOrgModal(false);
+              }}
+              disabled={!selectedOrg}
+            >
+              Done
+            </IonButton>
+
+          </IonContent>
+        </IonModal>
+
       </IonContent>
     </IonPage>
   );
